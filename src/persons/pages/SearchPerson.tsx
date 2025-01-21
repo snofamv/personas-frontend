@@ -69,10 +69,10 @@ export const SearchPerson = () => {
           <h4>Resultado</h4>
           <hr />
           {/* ESTO SIGUE APARECIENDO EN EL DOM */}
-          <div className={`alert alert-primary ${showSearch ? "" : "d-none"}`}>
-            <p>Search a hero</p>
+          <div className={`alert alert-primary text-center ${showSearch ? "" : "d-none"}`}>
+            <p>Buscar persona por RUT</p>
           </div>
-          <div className={`alert alert-danger ${showError ? "" : "d-none"}`}>
+          <div className={`alert alert-danger text-center ${showError ? "" : "d-none"}`}>
             <p>
               No existen resultados con RUT: <b>{queryParam}</b>
             </p>
