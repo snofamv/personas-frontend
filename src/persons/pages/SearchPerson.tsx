@@ -35,7 +35,6 @@ export const SearchPerson = () => {
   // const [hoveredHero, setHoveredHero] = useState<string | null>(null);
   if (loading) return <p>Cargando datos...</p>;
   if (error && !loading) return <p>Error...</p>;
-  console.log(person.length);
   return (
     <>
       <h1>
