@@ -22,7 +22,8 @@ export const PersonsPage = () => {
     <>
       {loading && <h2 className="text-center">Cargando...</h2>}
       {error && <h5 className="text-center">Error: {error}</h5>}
-      <div className="container d-flex mt-3 mb-5 col justify-content-center">
+      <div className="sm-container">
+        <h1 className="text-center mb-3">Lista de personas</h1>
         <PersonList
           dataList={persons}
           onDelete={handleDelete}

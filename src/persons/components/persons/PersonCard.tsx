@@ -40,29 +40,24 @@ export const PersonCard = ({
             <p className="username">RUT: {`${rut}-${dv}`}</p>
           </div>
 
-          {/* Indicador de estado */}
-          <div className="status-indicator">
-            <span className={`status-badge ${activo ? "active" : "inactive"}`}>
-              {activo ? "Activo" : "Inactivo"}
-            </span>
-          </div>
-
           {/* Botones adicionales */}
           {showExtraButtons && (
-            <>
-              <Link
-                className="follow text-decoration-none"
-                to={`/search/${rut}`}
+            <div className="d-flex flex-column flex-sm-row align-items-center gap-2">
+              <span
+                style={{ color: !activo ? "red" : "green", fontWeight: "bold" }}
               >
+                {activo ? "Activo" : "Inactivo"}
+              </span>
+              <Link className="btn btn-outline-primary" to={`/search/${rut}`}>
                 Ver más
               </Link>
               <button
-                className="delete text-decoration-none"
+                className="btn btn-outline-danger"
                 onClick={onDelete && (() => onDelete(personId))}
               >
                 Eliminar
               </button>
-            </>
+            </div>
           )}
         </div>
       </div>

@@ -10,8 +10,7 @@ interface Props {
 
 export const PersonList = ({ dataList, onDelete }: Props) => {
   return (
-    <div className="card">
-      <p className="title">Lista de personas</p>
+    <div className="listCard w-100">
       <div className="user__container">
         {dataList.map((person) => (
           <PersonCard
