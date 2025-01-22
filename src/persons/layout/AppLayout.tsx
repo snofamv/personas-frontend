@@ -5,7 +5,7 @@ interface Props {
   children: React.JSX.Element;
 }
 const drawerWidth = 240;
-export const AppLayout = ({ children }: Props) => {
+export const AppLayout: React.FC<Props> = ({ children }) => {
   return (
     <Box sx={{ display: "flex" }}>
       {/* NAVBAR */}
@@ -13,12 +13,11 @@ export const AppLayout = ({ children }: Props) => {
       {/* SIDEBAR */}
       <Sidebar drawerWidth={drawerWidth} />
       <Box component={"main"} sx={{ flexGrow: 1, p: 3 }}>
-        {/* TOOLBAR O NAVBAR */}
+        {/* TOOLBAR */}
         <Toolbar />
         {children}
       </Box>
     </Box>
   );
 };
-
 export default AppLayout;

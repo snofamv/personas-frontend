@@ -1,4 +1,4 @@
-import { People, PersonSearch } from "@mui/icons-material";
+import { People, PersonAdd, PersonSearch } from "@mui/icons-material";
 import {
   Box,
   Divider,
@@ -20,6 +20,7 @@ interface Props {
 const PATHS = [
   { id: 1, title: "Personas", pathName: "persons", routeIcon: <People /> },
   { id: 2, title: "Buscar", pathName: "search", routeIcon: <PersonSearch /> },
+  { id: 3, title: "Agregar", pathName: "add", routeIcon: <PersonAdd /> },
 ];
 export const Sidebar = ({ drawerWidth }: Props) => {
   return (

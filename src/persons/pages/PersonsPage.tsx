@@ -1,36 +1,40 @@
-import { PersonList } from "../components/persons/PersonList";
-import { usePersons } from "../hooks/usePersons";
-import { deletePersonById } from "../helpers/deletePersonById";
-import { useNavigate } from "react-router";
-import AppLayout from "../layout/AppLayout";
+import { Grid, Typography } from "@mui/material";
+import DataTable from "../components/table/DataTable";
+import { Loader } from "../components/ui/Loader";
+import { usePersons } from "../hooks";
 
 export const PersonsPage = () => {
   const { loading, persons, error, setOnDelete } = usePersons();
-  const navigate = useNavigate();
-  const handleDelete = async (id: string) => {
-    try {
-      await deletePersonById(id);
-      setOnDelete(true);
-    } catch (err) {
-      console.error("Error al eliminar persona:", err);
-    }
-  };
-  const handleUpdatePerson = (id: string) => {
-    navigate(`/search/${id}`);
-  };
-  console.log(persons);
+  // const navigate = useNavigate();
+  // const handleDelete = async (id: string) => {
+  //   try {
+  //     await deletePersonById(id);
+  //     setOnDelete(true);
+  //   } catch (err) {
+  //     console.error("Error al eliminar persona:", err);
+  //   }
+  // };
+  // const handleUpdatePerson = (id: string) => {
+  //   navigate(`/search/${id}`);
+  // };
+
   return (
-    <AppLayout>
-      <div className="sm-container">
-        {loading && <h2 className="text-center">Cargando...</h2>}
-        {error && <h5 className="text-center">Error: {error}</h5>}
-        <h1 className="text-center mb-3">Lista de personas</h1>
-        <PersonList
-          dataList={persons}
-          onDelete={handleDelete}
-          onClick={handleUpdatePerson}
-        />
-      </div>
-    </AppLayout>
+    <Grid
+      container
+      justifyContent="center"
+      display="flex"
+      sx={{ minHeight: "100vh" }} // Ajusta según el tamaño deseado
+    >
+      {loading && <Loader />}
+      {error && <Typography variant="h2">Ops.. Hubo un error.</Typography>}
+      {!loading && !error && persons && persons.length > 0 && (
+        <DataTable dataList={persons} />
+      )}
+      {!loading && !error && persons && persons.length === 0 && (
+        <Typography variant="h2" style={{ marginTop: 100 }}>
+          No existen registros
+        </Typography>
+      )}
+    </Grid>
   );
 };

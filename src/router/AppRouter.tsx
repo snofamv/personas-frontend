@@ -6,6 +6,7 @@ import {
   SearchPerson,
   UpdatePage,
 } from "../persons";
+import AppLayout from "../persons/layout/AppLayout";
 
 export const AppRouter = createBrowserRouter([
   {
@@ -14,30 +15,62 @@ export const AppRouter = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <PersonsPage />,
+        element: (
+          <AppLayout>
+            <PersonsPage />
+          </AppLayout>
+        ),
       },
       {
         path: "persons",
-        element: <PersonsPage />,
+        element: (
+          <AppLayout>
+            <PersonsPage />
+          </AppLayout>
+        ),
       },
       {
         path: "search/",
-        element: <SearchPerson />,
+        element: (
+          <AppLayout>
+            <SearchPerson />
+          </AppLayout>
+        ),
       },
       {
         path: "search/:rut",
-        element: <SearchPerson />,
+
+        element: (
+          <AppLayout>
+            <SearchPerson />
+          </AppLayout>
+        ),
       },
       {
         path: "add/",
-        element: <AddPage />,
+        element: (
+          <AppLayout>
+            <AddPage />
+          </AppLayout>
+        ),
       },
       {
         path: "update/:rut",
-        element: <UpdatePage />,
+        element: (
+          <AppLayout>
+            <UpdatePage />
+          </AppLayout>
+        ),
       },
 
-      { path: "/*", Component: NotFound },
+      {
+        path: "/*",
+        element: (
+          <AppLayout>
+            <NotFound />
+          </AppLayout>
+        ),
+      },
     ],
   },
 ]);
