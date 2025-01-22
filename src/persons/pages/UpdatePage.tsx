@@ -1,8 +1,9 @@
 import { Link, useNavigate, useParams } from "react-router";
-import { Nacionalidad, Person, Sexo } from "../../types/Person";
+import { Person } from "../../types/Person";
 import { useForm } from "../hooks";
 import { useSearch } from "../hooks/useSearch";
 import { useEffect } from "react";
+import { personSchema } from "../schemas";
 import { updatePerson } from "../helpers/updatePerson";
 
 export const UpdatePage = () => {
@@ -32,11 +33,11 @@ export const UpdatePage = () => {
     fec_nac: "",
     rut: "",
     dv: "",
-    sexo: Sexo.D,
+    sexo: "",
     estado_cv: 1,
     activo: 0,
     id: "",
-    nacionalidad: Nacionalidad.NA,
+    nacionalidad: "",
   });
 
   useEffect(() => {
@@ -47,7 +48,7 @@ export const UpdatePage = () => {
 
   const handleUpdateForm = async (event: React.FormEvent) => {
     event.preventDefault();
-    const newPerson: Person = {
+    const formData: Person = {
       nombre,
       apaterno,
       amaterno,
@@ -60,16 +61,25 @@ export const UpdatePage = () => {
       nacionalidad,
       id,
     };
-    console.log(newPerson);
-    const response = await updatePerson(newPerson);
-    console.log("REPUESTA:", response);
-    if (response.status === 404) {
-      console.warn("Error, recurso no encontrado.");
+    const result = personSchema.safeParse(formData);
+    if (!result.success) {
+      const newErrors = result.error.issues.map(
+        (issue) => `*El campo ${issue.path} - ${issue.message}.*\n`
+      );
+      alert(newErrors);
       return;
     }
-    if (response.status === 200) {
-      alert("Persona actualizada correctamente");
-      navigate(`/`);
+    if (result.success) {
+      console.log("Datos de formulario válidos.");
+      const response = await updatePerson(formData);
+      if (response.status === 404) {
+        console.warn("Error al actualizar datos.");
+        return;
+      }
+      if (response.status === 200) {
+        alert("Persona actualizada correctamente");
+        navigate(`/`);
+      }
     }
   };
 
@@ -107,7 +117,6 @@ export const UpdatePage = () => {
                 placeholder="RUT sin dígito verificador"
                 value={rut}
                 onChange={onInputChange}
-                required
               />
               <span className="input-group-text">-</span>
               <input
@@ -119,7 +128,6 @@ export const UpdatePage = () => {
                 maxLength={1}
                 value={dv}
                 onChange={onInputChange}
-                required
               />
               <select
                 className="form-select ms-5"
@@ -127,7 +135,6 @@ export const UpdatePage = () => {
                 name="activo"
                 value={activo}
                 onChange={onInputChange}
-                required
               >
                 <option value="">Estado...</option>
                 <option value={1}>Habilitado</option>
@@ -148,7 +155,6 @@ export const UpdatePage = () => {
             name="nombre"
             value={nombre}
             onChange={onInputChange}
-            required
           />
         </div>
 
@@ -164,7 +170,6 @@ export const UpdatePage = () => {
             name="apaterno"
             value={apaterno}
             onChange={onInputChange}
-            required
           />
         </div>
 
@@ -180,7 +185,6 @@ export const UpdatePage = () => {
             name="amaterno"
             value={amaterno}
             onChange={onInputChange}
-            required
           />
         </div>
 
@@ -196,7 +200,6 @@ export const UpdatePage = () => {
             name="fec_nac"
             value={fec_nac}
             onChange={onInputChange}
-            required
           />
         </div>
 
@@ -211,13 +214,12 @@ export const UpdatePage = () => {
             name="sexo"
             value={sexo}
             onChange={onInputChange}
-            required
           >
             <option value="">Seleccione...</option>
-            <option value={Sexo.M}>Masculino</option>
-            <option value={Sexo.F}>Femenino</option>
-            <option value={Sexo.NB}>No binario</option>
-            <option value={Sexo.D}>Desconocido</option>
+            <option value={"M"}>Masculino</option>
+            <option value={"F"}>Femenino</option>
+            <option value={"N"}>No binario</option>
+            <option value={"D"}>Desconocido</option>
           </select>
         </div>
 
@@ -232,11 +234,13 @@ export const UpdatePage = () => {
             name="nacionalidad"
             value={nacionalidad}
             onChange={onInputChange}
-            required
           >
-            <option value="">Seleccione...</option>
-            <option value={Nacionalidad.CL}>Chileno/a</option>
-            <option value={Nacionalidad.NA}>Sin nacionalidad</option>
+            <option value={""}>Seleccione...</option>
+            <option value={"CL"}>Chileno/a</option>
+            <option value={"ARG"}>Argentino/a</option>
+            <option value={"PE"}>Peruano/a</option>
+            <option value={"BR"}>Brasileño/a</option>
+            <option value={"NA"}>Sin nacionalidad</option>
           </select>
         </div>
 
@@ -251,7 +255,6 @@ export const UpdatePage = () => {
             name="estado_cv"
             value={estado_cv}
             onChange={onInputChange}
-            required
           >
             <option value="">Seleccione...</option>
             <option value={1}>Soltero/a</option>

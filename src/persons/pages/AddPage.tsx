@@ -1,19 +1,20 @@
-import { Nacionalidad, Person, Sexo } from "../../types/Person";
+import { Person } from "../../types/Person";
 import { setNewPerson } from "../helpers/setNewPerson";
 import { useForm } from "../hooks";
-const initialFormData: Person = {
+import { personSchema } from "../schemas";
+const initialFormData = {
   nombre: "",
   apaterno: "",
   amaterno: "",
   fec_nac: "",
   rut: "",
   dv: "",
-  sexo: Sexo.D,
+  sexo: "",
   estado_cv: 1,
   activo: 0,
   id: "",
-  nacionalidad: Nacionalidad.NA,
-} as Person;
+  nacionalidad: "",
+};
 export const AddPage = () => {
   const {
     onInputChange,
@@ -26,12 +27,13 @@ export const AddPage = () => {
     sexo,
     estado_cv,
     nacionalidad,
+    activo,
     onResetForm,
   } = useForm(initialFormData);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const newPerson: Person = {
+    const formData: Person = {
       nombre,
       apaterno,
       amaterno,
@@ -40,18 +42,25 @@ export const AddPage = () => {
       dv,
       sexo,
       estado_cv: parseInt(estado_cv, 10),
-      activo: 0,
+      activo: parseInt(activo, 10),
       id: "",
       nacionalidad,
     };
-    console.log("NEW PERSON: ", newPerson);
-    const response = await setNewPerson(newPerson);
-    if (response.status === 409) {
-      alert("Ya existe rut, modfique los datos.");
+    const result = personSchema.safeParse(formData);
+    if (!result.success) {
+      const newErrors = result.error.issues.map(
+        (issue) => `*El campo ${issue.path} - ${issue.message}.*\n`
+      );
+      alert(newErrors);
+      return;
     }
-    if (response.status === 200) {
-      onResetForm();
-      alert("Persona agregada correctamente");
+    if (result.success) {
+      console.log("Datos de formulario válidos.");
+      const response = await setNewPerson(formData);
+      if (response.status === 200) {
+        onResetForm();
+        alert("Persona agregada correctamente.");
+      }
     }
   };
 
@@ -71,7 +80,6 @@ export const AddPage = () => {
           name="nombre"
           value={nombre}
           onChange={onInputChange}
-          required
         />
       </div>
 
@@ -87,7 +95,6 @@ export const AddPage = () => {
           name="apaterno"
           value={apaterno}
           onChange={onInputChange}
-          required
         />
       </div>
 
@@ -103,7 +110,6 @@ export const AddPage = () => {
           name="amaterno"
           value={amaterno}
           onChange={onInputChange}
-          required
         />
       </div>
 
@@ -119,7 +125,6 @@ export const AddPage = () => {
           name="fec_nac"
           value={fec_nac}
           onChange={onInputChange}
-          required
         />
       </div>
 
@@ -137,7 +142,6 @@ export const AddPage = () => {
             placeholder="RUT sin dígito verificador"
             value={rut}
             onChange={onInputChange}
-            required
           />
           <span className="input-group-text">-</span>
           <input
@@ -149,7 +153,6 @@ export const AddPage = () => {
             maxLength={1}
             value={dv}
             onChange={onInputChange}
-            required
           />
         </div>
       </div>
@@ -165,13 +168,12 @@ export const AddPage = () => {
           name="sexo"
           value={sexo}
           onChange={onInputChange}
-          required
         >
           <option value="">Seleccione...</option>
-          <option value={Sexo.M}>Masculino</option>
-          <option value={Sexo.F}>Femenino</option>
-          <option value={Sexo.NB}>No binario</option>
-          <option value={Sexo.D}>Desconocido</option>
+          <option value={"M"}>Masculino</option>
+          <option value={"F"}>Femenino</option>
+          <option value={"N"}>No binario</option>
+          <option value={"D"}>Desconocido</option>
         </select>
       </div>
       {/* Nacionalidad */}
@@ -185,11 +187,13 @@ export const AddPage = () => {
           name="nacionalidad"
           value={nacionalidad}
           onChange={onInputChange}
-          required
         >
           <option value={""}>Seleccione...</option>
-          <option value={Nacionalidad.CL}>Chileno/a</option>
-          <option value={Nacionalidad.NA}>Sin nacionalidad</option>
+          <option value={"CL"}>Chileno/a</option>
+          <option value={"ARG"}>Argentino/a</option>
+          <option value={"PE"}>Peruano/a</option>
+          <option value={"BR"}>Brasileño/a</option>
+          <option value={"NA"}>Sin nacionalidad</option>
         </select>
       </div>
       {/* Estado Civil */}
@@ -203,7 +207,6 @@ export const AddPage = () => {
           name="estado_cv"
           value={estado_cv}
           onChange={onInputChange}
-          required
         >
           <option value={""}>Seleccione...</option>
           <option value={1}>Soltero/a</option>
