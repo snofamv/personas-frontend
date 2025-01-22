@@ -2,16 +2,23 @@ import { Link, useNavigate, useParams } from "react-router";
 import { Person } from "../../types/Person";
 import { useForm } from "../hooks";
 import { useSearch } from "../hooks/useSearch";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { personSchema } from "../schemas";
 import { updatePerson } from "../helpers/updatePerson";
+import { getDVRut } from "../utils";
 
 export const UpdatePage = () => {
   // HOOKS & VARIABLES
   const navigate = useNavigate();
   const { rut: queryParam = "" } = useParams();
   const { error, loading, person } = useSearch(queryParam);
-
+  const [inputRut, setInputRut] = useState({ body: queryParam, dv: "0" });
+  const handleChangeRut = (e: any) => {
+    const { value } = e.target;
+    const rutBody = value.replace(/\D/g, "");
+    const dv = rutBody.length > 0 ? getDVRut(rutBody) : "";
+    setInputRut({ body: rutBody, dv });
+  };
   const {
     setFormValues,
     onInputChange,
@@ -42,7 +49,10 @@ export const UpdatePage = () => {
 
   useEffect(() => {
     if (person && person.length > 0) {
-      setFormValues(person[0]);
+      const rutBody = queryParam.replace(/\D/g, "");
+      const dv = rutBody.length > 0 ? getDVRut(rutBody) : "";
+      setInputRut({ body: rutBody, dv });
+      setFormValues({ ...person[0] });
     }
   }, [person, queryParam]);
 
@@ -107,42 +117,40 @@ export const UpdatePage = () => {
           <label htmlFor="rut" className="form-label">
             RUT
           </label>
+
           <div className="input-group">
-            <div className="input-group">
+            {/* Campo RUT (más largo) */}
+            <div className="flex-grow-1 me-2">
               <input
                 type="text"
                 className="form-control"
                 id="rut"
                 name="rut"
                 placeholder="RUT sin dígito verificador"
-                value={rut}
-                onChange={onInputChange}
+                value={inputRut.body}
+                onChange={handleChangeRut}
+                maxLength={8} // Restringir la longitud máxima
+                aria-label="Campo de RUT"
               />
+            </div>
+            <div className="d-flex">
               <span className="input-group-text">-</span>
               <input
                 type="text"
-                className="form-control"
+                className="form-control w-auto"
                 id="dv"
                 name="dv"
                 placeholder="DV"
                 maxLength={1}
-                value={dv}
-                onChange={onInputChange}
+                value={inputRut.dv}
+                onChange={handleChangeRut}
+                disabled
+                aria-label="Campo de DV"
               />
-              <select
-                className="form-select ms-5"
-                id="activo"
-                name="activo"
-                value={activo}
-                onChange={onInputChange}
-              >
-                <option value="">Estado...</option>
-                <option value={1}>Habilitado</option>
-                <option value={0}>Deshabilitado</option>
-              </select>
             </div>
           </div>
         </div>
+
         {/* Nombre */}
         <div className="mb-3">
           <label htmlFor="nombre" className="form-label">

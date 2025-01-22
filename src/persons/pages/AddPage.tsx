@@ -1,7 +1,9 @@
+import { useEffect, useState } from "react";
 import { Person } from "../../types/Person";
 import { setNewPerson } from "../helpers/setNewPerson";
 import { useForm } from "../hooks";
 import { personSchema } from "../schemas";
+import { getDVRut } from "../utils";
 const initialFormData = {
   nombre: "",
   apaterno: "",
@@ -16,14 +18,19 @@ const initialFormData = {
   nacionalidad: "",
 };
 export const AddPage = () => {
+  const [rut, setRut] = useState({ body: "", dv: "0" });
+  const handleChangeRut = (e: any) => {
+    const { value } = e.target;
+    const rutBody = value.replace(/\D/g, "");
+    const dv = rutBody.length > 0 ? getDVRut(rutBody) : "";
+    setRut({ body: rutBody, dv });
+  };
   const {
     onInputChange,
     nombre,
     apaterno,
     amaterno,
     fec_nac,
-    rut,
-    dv,
     sexo,
     estado_cv,
     nacionalidad,
@@ -38,8 +45,8 @@ export const AddPage = () => {
       apaterno,
       amaterno,
       fec_nac,
-      rut,
-      dv,
+      rut: rut.body,
+      dv: rut.dv,
       sexo,
       estado_cv: parseInt(estado_cv, 10),
       activo: parseInt(activo, 10),
@@ -67,6 +74,44 @@ export const AddPage = () => {
   return (
     <form onSubmit={handleSubmit} className="p-4 border rounded shadow">
       <h3 className="mb-4">Registrar Persona</h3>
+      {/* RUT */}
+      <div className="mb-3">
+        <label htmlFor="rut" className="form-label">
+          RUT
+        </label>
+
+        <div className="input-group">
+          {/* Campo RUT (más largo) */}
+          <div className="flex-grow-1 me-2">
+            <input
+              type="text"
+              className="form-control"
+              id="rut"
+              name="rut"
+              placeholder="RUT sin dígito verificador"
+              value={rut.body}
+              onChange={handleChangeRut}
+              maxLength={8} // Restringir la longitud máxima
+              aria-label="Campo de RUT"
+            />
+          </div>
+          <div className="d-flex">
+            <span className="input-group-text">-</span>
+            <input
+              type="text"
+              className="form-control w-auto"
+              id="dv"
+              name="dv"
+              placeholder="DV"
+              maxLength={1}
+              value={rut.dv}
+              onChange={handleChangeRut}
+              disabled
+              aria-label="Campo de DV"
+            />
+          </div>
+        </div>
+      </div>
 
       {/* Nombre */}
       <div className="mb-3">
@@ -126,35 +171,6 @@ export const AddPage = () => {
           value={fec_nac}
           onChange={onInputChange}
         />
-      </div>
-
-      {/* RUT */}
-      <div className="mb-3">
-        <label htmlFor="rut" className="form-label">
-          RUT
-        </label>
-        <div className="input-group">
-          <input
-            type="text"
-            className="form-control"
-            id="rut"
-            name="rut"
-            placeholder="RUT sin dígito verificador"
-            value={rut}
-            onChange={onInputChange}
-          />
-          <span className="input-group-text">-</span>
-          <input
-            type="text"
-            className="form-control"
-            id="dv"
-            name="dv"
-            placeholder="DV"
-            maxLength={1}
-            value={dv}
-            onChange={onInputChange}
-          />
-        </div>
       </div>
 
       {/* Sexo */}
