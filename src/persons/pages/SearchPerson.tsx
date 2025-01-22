@@ -3,6 +3,7 @@ import { useForm } from "../hooks";
 import { useSearch } from "../hooks/useSearch";
 import { Person } from "../../types/Person";
 import { PersonCard } from "../components/persons/PersonCard";
+import Swal from "sweetalert2";
 const initialFormData = {
   searchText: "",
 };
@@ -15,7 +16,16 @@ export const SearchPerson = () => {
 
   const onSearch = (): void => {
     event?.preventDefault();
-    if (searchText.trim().length <= 1) return;
+    if (searchText.trim().length < 7 || searchText.trim().length > 8) {
+      Swal.fire({
+        title: "Busqueda",
+        html: `<h4>El rut ingresado para la busqueda es incorrecto</h4><br><p>Agregar un rut entre 7 y 8 caracters</p>`,
+        icon: "warning",
+        confirmButtonText: "Volver",
+      });
+      return;
+    }
+
     onResetForm();
     navigate(`/search/${searchText}`);
   };
@@ -40,14 +50,16 @@ export const SearchPerson = () => {
           <hr />
           <form onSubmit={onSearch}>
             <input
-              type="text"
+              type="string"
               name="searchText"
               placeholder="Encuentra a una persona..."
               className="form-control"
               onChange={onInputChange}
               value={searchText}
-              autoComplete="off"
-              minLength={8}
+              minLength={1}
+              maxLength={8}
+              pattern="^[0-9]{1,8}$" // Expresión regular para permitir solo letras y números (1 a 8 caracteres)
+              title="Solo se permiten numeros"
             />
             <button type="submit" className="btn btn-outline-primary mt-2">
               Buscar

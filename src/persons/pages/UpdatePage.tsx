@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { personSchema } from "../schemas";
 import { updatePerson } from "../helpers/updatePerson";
 import { getDVRut } from "../utils";
+import Swal from "sweetalert2";
 
 export const UpdatePage = () => {
   // HOOKS & VARIABLES
@@ -63,8 +64,8 @@ export const UpdatePage = () => {
       apaterno,
       amaterno,
       fec_nac,
-      rut,
-      dv,
+      rut: inputRut.body,
+      dv: inputRut.dv,
       sexo,
       estado_cv: parseInt(estado_cv, 10),
       activo: parseInt(activo, 10),
@@ -72,25 +73,53 @@ export const UpdatePage = () => {
       id,
     };
     const result = personSchema.safeParse(formData);
+    let errors = "";
     if (!result.success) {
-      const newErrors = result.error.issues.map(
-        (issue) => `*El campo ${issue.path} - ${issue.message}.*\n`
-      );
-      alert(newErrors);
+      result.error.issues.forEach(({ message }) => {
+        errors += `*${message}*<br>`; // Añadir salto de línea HTML
+      });
+      Swal.fire({
+        title: "Error!",
+        html: `<h5>Error al registrar datos</h5><br>${errors}`,
+        icon: "warning",
+        confirmButtonText: "Volver",
+      });
+
       return;
     }
-    if (result.success) {
-      console.log("Datos de formulario válidos.");
-      const response = await updatePerson(formData);
-      if (response.status === 404) {
-        console.warn("Error al actualizar datos.");
-        return;
-      }
-      if (response.status === 200) {
-        alert("Persona actualizada correctamente");
-        navigate(`/`);
-      }
+
+    const response = await updatePerson(formData);
+    if (response.status === 404) {
+      Swal.fire({
+        title: "Error al actualizar!",
+        html: `<h5>Error no se pudo actualizar la persona</h5><br>${errors}`,
+        icon: "error",
+        confirmButtonText: "Volver",
+        didOpen: () => {
+          setTimeout(() => {
+            // Cerrar la alerta
+            Swal.close();
+            // Redirigir
+            navigate("/");
+          }, 3000); // 2 segundos antes de cerrar y redirigir
+        },
+      });
+      return;
     }
+    Swal.fire({
+      title: "Actualizacion exitosa!",
+      html: `<h4>La persona fue actualizada exitosamente</h4><br><p>Serás redireccionado en breve</p>`,
+      icon: "success",
+      confirmButtonText: "Volver",
+      didOpen: () => {
+        setTimeout(() => {
+          // Cerrar la alerta
+          Swal.close();
+          // Redirigir
+          navigate("/");
+        }, 3000); // 2 segundos antes de cerrar y redirigir
+      },
+    });
   };
 
   return (

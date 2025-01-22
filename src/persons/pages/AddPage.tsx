@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { getDVRut } from "../utils";
 import { Person } from "../../types/Person";
+import { personSchema } from "../schemas";
 import { setNewPerson } from "../helpers/setNewPerson";
 import { useForm } from "../hooks";
-import { personSchema } from "../schemas";
-import { getDVRut } from "../utils";
+import { useState } from "react";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router";
 const initialFormData = {
   nombre: "",
   apaterno: "",
@@ -18,6 +20,7 @@ const initialFormData = {
   nacionalidad: "",
 };
 export const AddPage = () => {
+  const navigate = useNavigate();
   const [rut, setRut] = useState({ body: "", dv: "0" });
   const handleChangeRut = (e: any) => {
     const { value } = e.target;
@@ -54,20 +57,48 @@ export const AddPage = () => {
       nacionalidad,
     };
     const result = personSchema.safeParse(formData);
+    let errors = "";
+
     if (!result.success) {
-      const newErrors = result.error.issues.map(
-        (issue) => `*El campo ${issue.path} - ${issue.message}.*\n`
-      );
-      alert(newErrors);
+      result.error.issues.forEach(({ message }) => {
+        errors += `*${message}*<br>`; // Añadir salto de línea HTML
+      });
+      Swal.fire({
+        title: "Error al registrar persona",
+        html: `<span style="color: red;">${errors}</span>`, // Agregar color rojo con estilo en línea
+        icon: "error",
+        confirmButtonText: "Confirmar",
+      });
+
       return;
     }
     if (result.success) {
       console.log("Datos de formulario válidos.");
       const response = await setNewPerson(formData);
-      if (response.status === 200) {
-        onResetForm();
-        alert("Persona agregada correctamente.");
+      if (response.status === 409) {
+        Swal.fire({
+          title: "Rut ya existe!",
+          html: `<h2>El rut registrado ya existe en el sistema<h2>`, // Agregar color rojo con estilo en línea
+          icon: "warning",
+          confirmButtonText: "Volver",
+        });
+        return;
       }
+      onResetForm();
+      Swal.fire({
+        title: "Registro exitoso!",
+        html: `<h4>La persona fue registrada exitosamente</h4><br><p>Serás redireccionado en breve</p>`,
+        icon: "success",
+        confirmButtonText: "Volver",
+        didOpen: () => {
+          setTimeout(() => {
+            // Cerrar la alerta
+            Swal.close();
+            // Redirigir
+            navigate("/");
+          }, 3000); // 2 segundos antes de cerrar y redirigir
+        },
+      });
     }
   };
 
@@ -209,7 +240,7 @@ export const AddPage = () => {
           <option value={"ARG"}>Argentino/a</option>
           <option value={"PE"}>Peruano/a</option>
           <option value={"BR"}>Brasileño/a</option>
-          <option value={"NA"}>Sin nacionalidad</option>
+          <option value={"N"}>Sin nacionalidad</option>
         </select>
       </div>
       {/* Estado Civil */}
