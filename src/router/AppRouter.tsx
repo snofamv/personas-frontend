@@ -6,8 +6,6 @@ import {
   SearchPerson,
   UpdatePage,
 } from "../persons";
-import { Navbar } from "../persons/components/ui/Navbar";
-import { Fragment } from "react/jsx-runtime";
 
 export const AppRouter = createBrowserRouter([
   {
@@ -16,57 +14,27 @@ export const AppRouter = createBrowserRouter([
     children: [
       {
         index: true,
-        element: (
-          <Fragment>
-            <Navbar />
-            <PersonsPage />
-          </Fragment>
-        ),
+        element: <PersonsPage />,
       },
       {
         path: "persons",
-        element: (
-          <Fragment>
-            <Navbar />
-            <PersonsPage />
-          </Fragment>
-        ),
+        element: <PersonsPage />,
       },
       {
         path: "search/",
-        element: (
-          <Fragment>
-            <Navbar />
-            <SearchPerson />
-          </Fragment>
-        ),
+        element: <SearchPerson />,
       },
       {
         path: "search/:rut",
-        element: (
-          <Fragment>
-            <Navbar />
-            <SearchPerson />
-          </Fragment>
-        ),
+        element: <SearchPerson />,
       },
       {
         path: "add/",
-        element: (
-          <Fragment>
-            <Navbar />
-            <AddPage />
-          </Fragment>
-        ),
+        element: <AddPage />,
       },
       {
         path: "update/:rut",
-        element: (
-          <Fragment>
-            <Navbar />
-            <UpdatePage />
-          </Fragment>
-        ),
+        element: <UpdatePage />,
       },
 
       { path: "/*", Component: NotFound },

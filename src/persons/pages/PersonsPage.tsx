@@ -2,6 +2,7 @@ import { PersonList } from "../components/persons/PersonList";
 import { usePersons } from "../hooks/usePersons";
 import { deletePersonById } from "../helpers/deletePersonById";
 import { useNavigate } from "react-router";
+import AppLayout from "../layout/AppLayout";
 
 export const PersonsPage = () => {
   const { loading, persons, error, setOnDelete } = usePersons();
@@ -19,10 +20,10 @@ export const PersonsPage = () => {
   };
   console.log(persons);
   return (
-    <>
-      {loading && <h2 className="text-center">Cargando...</h2>}
-      {error && <h5 className="text-center">Error: {error}</h5>}
+    <AppLayout>
       <div className="sm-container">
+        {loading && <h2 className="text-center">Cargando...</h2>}
+        {error && <h5 className="text-center">Error: {error}</h5>}
         <h1 className="text-center mb-3">Lista de personas</h1>
         <PersonList
           dataList={persons}
@@ -30,6 +31,6 @@ export const PersonsPage = () => {
           onClick={handleUpdatePerson}
         />
       </div>
-    </>
+    </AppLayout>
   );
 };
