@@ -4,7 +4,7 @@ interface Props {
   showExtraButtons: boolean;
   person: Person;
   onClick?: ({}: any) => void;
-  onDelete: (id: string) => void;
+  onDelete?: (id: string) => void;
 }
 export const PersonCard = ({
   showExtraButtons,
@@ -58,7 +58,7 @@ export const PersonCard = ({
               </Link>
               <button
                 className="delete text-decoration-none"
-                onClick={() => onDelete(personId)}
+                onClick={onDelete && (() => onDelete(personId))}
               >
                 Eliminar
               </button>

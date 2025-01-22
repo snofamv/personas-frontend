@@ -6,10 +6,7 @@ import { PersonCard } from "../components/persons/PersonCard";
 const initialFormData = {
   searchText: "",
 };
-interface Props {
-  onDelete: () => void;
-}
-export const SearchPerson = ({ onDelete }: Props) => {
+export const SearchPerson = () => {
   // HOOKS & VARIABLES
   const navigate = useNavigate();
   const { rut: queryParam = "" } = useParams();
@@ -96,7 +93,6 @@ export const SearchPerson = ({ onDelete }: Props) => {
                 <PersonCard
                   key={person.id}
                   person={person}
-                  onDelete={onDelete}
                   showExtraButtons={false}
                   onClick={handleUpdatePerson}
                 />
