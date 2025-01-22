@@ -2,9 +2,11 @@ import { Grid, Typography } from "@mui/material";
 import DataTable from "../components/table/DataTable";
 import { Loader } from "../components/ui/Loader";
 import { usePersons } from "../hooks";
+// import { useNavigate } from "react-router";
+// import { deletePersonById } from "../helpers/deletePersonById";
 
 export const PersonsPage = () => {
-  const { loading, persons, error, setOnDelete } = usePersons();
+  const { loading, persons, error } = usePersons();
   // const navigate = useNavigate();
   // const handleDelete = async (id: string) => {
   //   try {

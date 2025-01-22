@@ -31,8 +31,6 @@ export const SearchPerson = () => {
     onResetForm();
     navigate(`/search/${searchText}`);
   };
-  const showSearch: boolean =
-    person.length === 0 && queryParam === "" ? true : false;
 
   const handleUpdatePerson = (values: any) => {
     navigate(`/update/${values.rut}`);
@@ -70,7 +68,7 @@ export const SearchPerson = () => {
         {/* DATA LIST PERSONAS  */}
         <Grid>
           {loading && !error && <Loader />}
-          {error && !loading && <Typography variant="h5" >Error</Typography>}
+          {error && !loading && <Typography variant="h5">Error</Typography>}
           <Typography variant="h4" textAlign={"end"}>
             Resultados
           </Typography>
