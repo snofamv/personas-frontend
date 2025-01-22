@@ -1,4 +1,3 @@
-
 /* .card:hover {
   transform: scale(1.05);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
@@ -6,7 +5,7 @@
 } */
 /* From Uiverse.io by Javierrocadev */
 .card {
-  width: 350px;
+  width: 450px;
   height: auto;
   background: #e8eaea;
   border-radius: 15px;
@@ -75,7 +74,14 @@
   padding: 8px 15px;
   font-weight: 700;
 }
-
+.delete {
+  border: none;
+  border-radius: 25px;
+  background-color: #0f1113;
+  color: rgb(255, 105, 105);
+  padding: 8px 15px;
+  font-weight: 700;
+}
 .more {
   display: block;
   text-decoration: none;

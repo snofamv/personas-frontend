@@ -2,7 +2,7 @@ import { PersonResponse } from "../../types/Person";
 
 export const setNewPerson = async (person: {}): Promise<any> => {
   try {
-    const response = await fetch("http://localhost:5001/api/personas/agregar", {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/personas/agregar`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -3,7 +3,7 @@ import { Person, PersonResponse } from "../../types/Person";
 export const updatePerson = async (person: Person): Promise<any> => {
   try {
     const response = await fetch(
-      `http://localhost:5001/api/personas/actualizar/${person.id || ""}`,
+      `${import.meta.env.VITE_API_URL}/api/personas/actualizar/${person.id || ""}`,
       {
         method: "PATCH",
         headers: {

@@ -69,15 +69,13 @@ export const UpdatePage = () => {
     if (response.status === 200) {
       alert("Persona actualizada correctamente");
       navigate(`/`);
-      onFormReset();
     }
   };
 
-  if (loading) return <p>Cargando datos...</p>;
-  if (error) return <p>Error al cargar los datos...</p>;
-
   return (
     <>
+      {loading && <h5 className="text-center">Cargando</h5>}
+      {error && <h5 className="text-center">Error</h5>}
       <form
         onSubmit={handleUpdateForm}
         className="p-4 border rounded shadow container mt-3"

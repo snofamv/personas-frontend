@@ -31,10 +31,7 @@ export const SearchPerson = () => {
   };
   const showSearch: boolean =
     person.length === 0 && queryParam === "" ? true : false;
-  const showError: boolean = person.length === 0 && queryParam.length > 0;
-  // const [hoveredHero, setHoveredHero] = useState<string | null>(null);
-  if (loading) return <p>Cargando datos...</p>;
-  if (error && !loading) return <p>Error...</p>;
+  console.log(person);
   return (
     <>
       <h1>
@@ -67,18 +64,38 @@ export const SearchPerson = () => {
         <div className="col-7">
           <h4>Resultado</h4>
           <hr />
-          {/* ESTO SIGUE APARECIENDO EN EL DOM */}
-          <div className={`alert alert-primary text-center ${showSearch ? "" : "d-none"}`}>
-            <p>Buscar persona por RUT</p>
-          </div>
-          <div className={`alert alert-danger text-center ${showError ? "" : "d-none"}`}>
-            <p>
-              No existen resultados con RUT: <b>{queryParam}</b>
-            </p>
-          </div>
+          {error && <h5 className="text-center">Error</h5>}
+
           <div className={`col`}>
+            {/* ESTO SIGUE APARECIENDO EN EL DOM */}
+            <div
+              className={`alert alert-primary text-center ${
+                showSearch && loading ? "" : "d-none"
+              }`}
+            >
+              <p>Cargando...</p>
+            </div>
+            <div
+              className={`alert alert-primary text-center ${
+                showSearch ? "" : "d-none"
+              }`}
+            >
+              <p>Buscar persona por RUT</p>
+            </div>
+            <div
+              className={`alert alert-danger text-center ${
+                !showSearch && !loading && person[0]?.id === undefined
+                  ? ""
+                  : "d-none"
+              }`}
+            >
+              <p>
+                No existen resultados con RUT: <b>{queryParam}</b>
+              </p>
+            </div>
             {person &&
               person.length > 0 &&
+              person[0].id &&
               person.map((person: Person) => (
                 <PersonCard
                   key={person.id}

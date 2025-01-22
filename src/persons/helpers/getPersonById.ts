@@ -1,7 +1,9 @@
 
 export const getPersonById = async (id: string): Promise<any> => {
   try {
-    const response = await fetch(`http://localhost:5001/api/personas/id/${id}`);
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/personas/id/${id}`
+    );
 
     if (!response.ok) {
       // Manejo de errores basado en el código de estado HTTP

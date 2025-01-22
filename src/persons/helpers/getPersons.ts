@@ -1,8 +1,9 @@
+
 import { PersonResponse } from "../../types/Person";
 
 export const getPersons = async (): Promise<PersonResponse> => {
   try {
-    const response = await fetch("http://localhost:5001/api/personas/");
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/personas/`);
 
     if (!response.ok) {
       // Manejo de errores basado en el código de estado HTTP
