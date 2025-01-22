@@ -180,23 +180,6 @@ export const UpdatePage = () => {
           </div>
         </div>
 
-        {/* Estado PERSONA */}
-        <div className="mb-3">
-          <label htmlFor="estado_cv" className="form-label">
-            Estado Persona
-          </label>
-          <select
-            className="form-select"
-            id="activo"
-            name="activo"
-            value={activo}
-            onChange={onInputChange}
-          >
-            <option value="">Seleccione...</option>
-            <option value={1}>Habilitado/a</option>
-            <option value={0}>Deshabilitado/a</option>
-          </select>
-        </div>
         {/* Nombre */}
         <div className="mb-3">
           <label htmlFor="nombre" className="form-label">

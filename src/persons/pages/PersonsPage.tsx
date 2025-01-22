@@ -17,7 +17,7 @@ export const PersonsPage = () => {
   const handleUpdatePerson = (id: string) => {
     navigate(`/search/${id}`);
   };
-
+  console.log(persons);
   return (
     <>
       {loading && <h2 className="text-center">Cargando...</h2>}
