@@ -3,35 +3,31 @@ import { useForm } from "../hooks";
 import { useSearch } from "../hooks/useSearch";
 import { Person } from "../../types/Person";
 import { PersonCard } from "../components/persons/PersonCard";
-import { Modal } from "../components/ui/Modal";
-import { useState } from "react";
 const initialFormData = {
   searchText: "",
 };
-export const SearchPerson = () => {
+interface Props {
+  onDelete: () => void;
+}
+export const SearchPerson = ({ onDelete }: Props) => {
   // HOOKS & VARIABLES
   const navigate = useNavigate();
   const { rut: queryParam = "" } = useParams();
   const { error, loading, person } = useSearch(queryParam);
   const { onInputChange, searchText, onResetForm } = useForm(initialFormData);
-  // METHODS
-  const [isModalOpen, setModalOpen] = useState(false);
-  const handleOpenModal = () => setModalOpen(true);
-  const handleCloseModal = () => setModalOpen(false);
-  const handleEditProfile = () => {
-    setModalOpen(false);
-    navigate(`/update/${queryParam}`);
-  };
+
   const onSearch = (): void => {
     event?.preventDefault();
     if (searchText.trim().length <= 1) return;
-
     onResetForm();
     navigate(`/search/${searchText}`);
   };
   const showSearch: boolean =
     person.length === 0 && queryParam === "" ? true : false;
-  console.log(person);
+
+  const handleUpdatePerson = (values: any) => {
+    navigate(`/update/${values.rut}`);
+  };
   return (
     <>
       <h1>
@@ -100,22 +96,11 @@ export const SearchPerson = () => {
                 <PersonCard
                   key={person.id}
                   person={person}
-                  showMore={false}
-                  onClick={handleOpenModal}
+                  onDelete={onDelete}
+                  showExtraButtons={false}
+                  onClick={handleUpdatePerson}
                 />
               ))}
-            {person && person.length > 0 && (
-              <Modal
-                key={person[0].id}
-                isOpen={isModalOpen}
-                title={`RUT: ${person[0].rut}-${person[0].dv} | ${person[0].nombre} ${person[0].apaterno}`}
-                body={<pre>{JSON.stringify(person, null, 3)}</pre>}
-                onClose={handleCloseModal}
-                onSave={handleEditProfile}
-                closeButtonText="Cerrar"
-                actionButtonText="Editar ✍"
-              />
-            )}
           </div>
         </div>
       </div>

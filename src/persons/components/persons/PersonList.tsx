@@ -5,6 +5,7 @@ import { Person } from "../../../types/Person";
 interface Props {
   dataList: Person[];
   onDelete: (id: string) => void;
+  onClick: (id: string) => void;
 }
 
 export const PersonList = ({ dataList, onDelete }: Props) => {

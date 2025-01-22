@@ -3,7 +3,7 @@ import { Person } from "../../../types/Person";
 interface Props {
   showExtraButtons: boolean;
   person: Person;
-  onClick?: () => void;
+  onClick?: ({}: any) => void;
   onDelete: (id: string) => void;
 }
 export const PersonCard = ({
@@ -12,11 +12,21 @@ export const PersonCard = ({
   onClick,
   onDelete,
 }: Props) => {
-  const { nombre = "", apaterno = "", rut = "", dv = "", id = "" } = person;
+  const {
+    nombre = "",
+    apaterno = "",
+    rut = "",
+    dv = "",
+    id: personId = "",
+    activo,
+  } = person;
 
   return (
     <>
-      <div className="user" onClick={onClick && onClick}>
+      <div
+        className="user"
+        onClick={() => onClick && onClick({ rut, personId })}
+      >
         <div className="image">
           <img
             src={`https://ui-avatars.com/api/?name=${nombre}+${apaterno}&background=random`}
@@ -29,26 +39,31 @@ export const PersonCard = ({
             <span className="name">{`${nombre} ${apaterno}`}</span>
             <p className="username">RUT: {`${rut}-${dv}`}</p>
           </div>
-          {showExtraButtons ? (
-            <Link
-              className={`follow text-decoration-none ${
-                showExtraButtons ? "" : "d-none"
-              }`}
-              to={`/search/${rut}`}
-            >
-              Ver mas
-            </Link>
-          ) : null}
-          {showExtraButtons ? (
-            <button
-              className={`delete text-decoration-none${
-                showExtraButtons ? "" : "d-none"
-              }`}
-              onClick={() => onDelete(id)}
-            >
-              Eliminar
-            </button>
-          ) : null}
+
+          {/* Indicador de estado */}
+          <div className="status-indicator">
+            <span className={`status-badge ${activo ? "active" : "inactive"}`}>
+              {activo ? "Activo" : "Inactivo"}
+            </span>
+          </div>
+
+          {/* Botones adicionales */}
+          {showExtraButtons && (
+            <>
+              <Link
+                className="follow text-decoration-none"
+                to={`/search/${rut}`}
+              >
+                Ver más
+              </Link>
+              <button
+                className="delete text-decoration-none"
+                onClick={() => onDelete(personId)}
+              >
+                Eliminar
+              </button>
+            </>
+          )}
         </div>
       </div>
     </>

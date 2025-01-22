@@ -1,4 +1,4 @@
-import { EstadoCV, Nacionalidad, Person, Sexo } from "../../types/Person";
+import { Nacionalidad, Person, Sexo } from "../../types/Person";
 import { setNewPerson } from "../helpers/setNewPerson";
 import { useForm } from "../hooks";
 const initialFormData: Person = {
@@ -9,7 +9,7 @@ const initialFormData: Person = {
   rut: "",
   dv: "",
   sexo: Sexo.D,
-  estado_cv: EstadoCV.SOLTERO,
+  estado_cv: 1,
   activo: 0,
   id: "",
   nacionalidad: Nacionalidad.NA,
@@ -39,11 +39,12 @@ export const AddPage = () => {
       rut,
       dv,
       sexo,
-      estado_cv,
+      estado_cv: parseInt(estado_cv, 10),
       activo: 0,
       id: "",
       nacionalidad,
     };
+    console.log("NEW PERSON: ", newPerson);
     const response = await setNewPerson(newPerson);
     if (response.status === 409) {
       alert("Ya existe rut, modfique los datos.");
@@ -205,10 +206,10 @@ export const AddPage = () => {
           required
         >
           <option value={""}>Seleccione...</option>
-          <option value={EstadoCV.SOLTERO}>Soltero/a</option>
-          <option value={EstadoCV.CASADO}>Casado/a</option>
-          <option value={EstadoCV.DIVORCIADO}>Divorciado/a</option>
-          <option value={EstadoCV.VIUDO}>Viudo/a</option>
+          <option value={1}>Soltero/a</option>
+          <option value={2}>Casado/a</option>
+          <option value={3}>Divorciado/a</option>
+          <option value={4}>Viudo/a</option>
         </select>
       </div>
 

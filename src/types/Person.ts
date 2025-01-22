@@ -14,7 +14,7 @@ export interface Person {
   sexo: Sexo;
   nacionalidad: Nacionalidad;
   activo: number;
-  estado_cv: EstadoCV;
+  estado_cv: number;
 }
 
 export enum Nacionalidad {
@@ -28,9 +28,8 @@ export enum Sexo {
   NB = "N",
   D = "D",
 }
-export enum EstadoCV {
-  SOLTERO = 1,
-  CASADO = 2,
-  DIVORCIADO = 3,
-  VIUDO = 4,
+
+export enum EstadoActivo {
+  Habilitado = 1,
+  Deshabilitado = 0,
 }

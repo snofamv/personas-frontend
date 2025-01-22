@@ -12,8 +12,7 @@ export const usePersons = () => {
 
     try {
       const { message } = await getPersons();
-      const filterData = message.filter((person) => person.activo === 1);
-      setPersons(filterData);
+      setPersons(message);
     } catch (err) {
       console.error("Error fetching persons:", err);
       setError("Error al obtener los datos");

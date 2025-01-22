@@ -1,5 +1,5 @@
 import { Link, useNavigate, useParams } from "react-router";
-import { EstadoCV, Nacionalidad, Person, Sexo } from "../../types/Person";
+import { Nacionalidad, Person, Sexo } from "../../types/Person";
 import { useForm } from "../hooks";
 import { useSearch } from "../hooks/useSearch";
 import { useEffect } from "react";
@@ -24,7 +24,7 @@ export const UpdatePage = () => {
     sexo,
     fec_nac,
     id,
-    onFormReset,
+    activo,
   } = useForm({
     nombre: "",
     apaterno: "",
@@ -33,7 +33,7 @@ export const UpdatePage = () => {
     rut: "",
     dv: "",
     sexo: Sexo.D,
-    estado_cv: EstadoCV.SOLTERO,
+    estado_cv: 1,
     activo: 0,
     id: "",
     nacionalidad: Nacionalidad.NA,
@@ -55,11 +55,12 @@ export const UpdatePage = () => {
       rut,
       dv,
       sexo,
-      estado_cv,
-      activo: 0,
+      estado_cv: parseInt(estado_cv, 10),
+      activo: parseInt(activo, 10),
       nacionalidad,
       id,
     };
+    console.log(newPerson);
     const response = await updatePerson(newPerson);
     console.log("REPUESTA:", response);
     if (response.status === 404) {
@@ -97,28 +98,42 @@ export const UpdatePage = () => {
             RUT
           </label>
           <div className="input-group">
-            <input
-              type="text"
-              className="form-control"
-              id="rut"
-              name="rut"
-              placeholder="RUT sin dígito verificador"
-              value={rut}
-              onChange={onInputChange}
-              required
-            />
-            <span className="input-group-text">-</span>
-            <input
-              type="text"
-              className="form-control"
-              id="dv"
-              name="dv"
-              placeholder="DV"
-              maxLength={1}
-              value={dv}
-              onChange={onInputChange}
-              required
-            />
+            <div className="input-group">
+              <input
+                type="text"
+                className="form-control"
+                id="rut"
+                name="rut"
+                placeholder="RUT sin dígito verificador"
+                value={rut}
+                onChange={onInputChange}
+                required
+              />
+              <span className="input-group-text">-</span>
+              <input
+                type="text"
+                className="form-control"
+                id="dv"
+                name="dv"
+                placeholder="DV"
+                maxLength={1}
+                value={dv}
+                onChange={onInputChange}
+                required
+              />
+              <select
+                className="form-select ms-5"
+                id="activo"
+                name="activo"
+                value={activo}
+                onChange={onInputChange}
+                required
+              >
+                <option value="">Estado...</option>
+                <option value={1}>Habilitado</option>
+                <option value={0}>Deshabilitado</option>
+              </select>
+            </div>
           </div>
         </div>
         {/* Nombre */}
@@ -239,17 +254,17 @@ export const UpdatePage = () => {
             required
           >
             <option value="">Seleccione...</option>
-            <option value={EstadoCV.SOLTERO}>Soltero/a</option>
-            <option value={EstadoCV.CASADO}>Casado/a</option>
-            <option value={EstadoCV.DIVORCIADO}>Divorciado/a</option>
-            <option value={EstadoCV.VIUDO}>Viudo/a</option>
+            <option value={1}>Soltero/a</option>
+            <option value={2}>Casado/a</option>
+            <option value={3}>Divorciado/a</option>
+            <option value={4}>Viudo/a</option>
           </select>
         </div>
 
         {/* Botón Registrar */}
         <div className="d-flex row gap-2">
-          <button type="submit" className="btn btn-primary w-100">
-            Registrar
+          <button type="submit" className="btn btn-success w-100">
+            Actualizar
           </button>
         </div>
       </form>

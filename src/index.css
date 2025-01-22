@@ -5,7 +5,7 @@
 } */
 /* From Uiverse.io by Javierrocadev */
 .card {
-  width: 450px;
+  width: 550px;
   height: auto;
   background: #e8eaea;
   border-radius: 15px;
@@ -100,4 +100,23 @@
 
 .follow:hover {
   background-color: #2c3136;
+}
+
+.status-indicator {
+  margin-top: 0.5rem;
+}
+.status-badge {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+.status-badge.active {
+  background-color: #28a745;
+  color: #fff;
+}
+.status-badge.inactive {
+  background-color: #dc3545;
+  color: #fff;
 }
