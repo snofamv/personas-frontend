@@ -22,7 +22,7 @@ export const AppRouter = createBrowserRouter([
         ),
       },
       {
-        path: "persons",
+        path: "persons/",
         element: (
           <AppLayout>
             <PersonsPage />
