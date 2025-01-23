@@ -269,6 +269,8 @@ export const AddPage = () => {
 
         {/* Botón Registrar */}
         <Grid
+          container
+          mt={2}
           flexDirection={"row"}
           display={"flex"}
           spacing={2}
