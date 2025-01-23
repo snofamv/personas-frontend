@@ -7,6 +7,8 @@ import { personSchema } from "../schemas";
 import { updatePerson } from "../helpers/updatePerson";
 import { getDVRut } from "../utils";
 import Swal from "sweetalert2";
+import { Button, Grid, MenuItem, TextField } from "@mui/material";
+import { Loader } from "../components/ui/Loader";
 
 export const UpdatePage = () => {
   // HOOKS & VARIABLES
@@ -21,13 +23,13 @@ export const UpdatePage = () => {
     setInputRut({ body: rutBody, dv });
   };
   const {
+    onResetForm,
     setFormValues,
     onInputChange,
     nombre,
     apaterno,
     amaterno,
     rut = queryParam,
-    dv,
     estado_cv,
     nacionalidad,
     sexo,
@@ -101,7 +103,7 @@ export const UpdatePage = () => {
             Swal.close();
             // Redirigir
             navigate("/");
-          }, 3000); // 2 segundos antes de cerrar y redirigir
+          }, 2000); // 2 segundos antes de cerrar y redirigir
         },
       });
       return;
@@ -117,198 +119,214 @@ export const UpdatePage = () => {
           Swal.close();
           // Redirigir
           navigate("/");
-        }, 3000); // 2 segundos antes de cerrar y redirigir
+        }, 2000); // 2 segundos antes de cerrar y redirigir
       },
     });
   };
   {
-    loading && <h5 className="text-center">Cargando</h5>;
+    loading && <Loader />;
   }
   {
     error && <h5 className="text-center">Error</h5>;
   }
   return (
-    <form
-      onSubmit={handleUpdateForm}
-      className="p-4 border rounded shadow container mt-3"
-    >
-      <legend>
-        <div className="d-flex gap-3 mt-2 justify-content-between align-items-center">
-          <h1>
-            {rut}-{dv} || {`${nombre} ${apaterno}`}
-          </h1>
-          <Link to={"/"} className="btn btn-primary">
-            Volver
-          </Link>
-        </div>
-        <hr />
-      </legend>
-      {/* RUT */}
-      <div className="mb-3">
-        <label htmlFor="rut" className="form-label">
-          RUT
-        </label>
+    <Grid>
+      <Grid item sx={{ mb: 2 }}>
+        <Link to={"/"}>
+          <Button variant="contained">Volver</Button>
+        </Link>
+      </Grid>
 
-        <div className="input-group">
-          {/* Campo RUT (más largo) */}
-          <div className="flex-grow-1 me-2">
-            <input
-              type="text"
-              className="form-control"
+      <form
+        onSubmit={handleUpdateForm}
+        style={{
+          padding: "16px",
+          border: "1px solid #ccc",
+          borderRadius: "8px",
+          boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+          margin: "0px",
+        }}
+      >
+        <h3 style={{ marginBottom: "16px" }}>Actualizar datos personales</h3>
+
+        {/* RUT */}
+        <div style={{ marginBottom: "16px" }}>
+          <label
+            htmlFor="rut"
+            style={{ display: "block", marginBottom: "8px" }}
+          >
+            RUT
+          </label>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <TextField
+              fullWidth
               id="rut"
               name="rut"
               placeholder="RUT sin dígito verificador"
               value={inputRut.body}
               onChange={handleChangeRut}
-              maxLength={8} // Restringir la longitud máxima
-              aria-label="Campo de RUT"
+              inputProps={{ maxLength: 8, "aria-label": "Campo de RUT" }}
+              sx={{ marginRight: "8px" }}
             />
-          </div>
-          <div className="d-flex">
-            <span className="input-group-text">-</span>
-            <input
-              type="text"
-              className="form-control w-auto"
+            <span style={{ margin: "0 8px" }}>-</span>
+            <TextField
               id="dv"
               name="dv"
               placeholder="DV"
-              maxLength={1}
               value={inputRut.dv}
               onChange={handleChangeRut}
               disabled
-              aria-label="Campo de DV"
+              inputProps={{ maxLength: 1, "aria-label": "Campo de DV" }}
+              sx={{ width: "60px" }}
             />
           </div>
         </div>
-      </div>
 
-      {/* Nombre */}
-      <div className="mb-3">
-        <label htmlFor="nombre" className="form-label">
-          Nombre
-        </label>
-        <input
-          type="text"
-          className="form-control"
-          id="nombre"
-          name="nombre"
-          value={nombre}
-          onChange={onInputChange}
-        />
-      </div>
+        {/* Nombre */}
+        <div style={{ marginBottom: "16px" }}>
+          <TextField
+            fullWidth
+            id="nombre"
+            name="nombre"
+            label="Nombre"
+            value={nombre}
+            onChange={onInputChange}
+          />
+        </div>
 
-      {/* Apellido Paterno */}
-      <div className="mb-3">
-        <label htmlFor="apaterno" className="form-label">
-          Apellido Paterno
-        </label>
-        <input
-          type="text"
-          className="form-control"
-          id="apaterno"
-          name="apaterno"
-          value={apaterno}
-          onChange={onInputChange}
-        />
-      </div>
+        {/* Apellido Paterno */}
+        <div style={{ marginBottom: "16px" }}>
+          <TextField
+            fullWidth
+            id="apaterno"
+            name="apaterno"
+            label="Apellido Paterno"
+            value={apaterno}
+            onChange={onInputChange}
+          />
+        </div>
 
-      {/* Apellido Materno */}
-      <div className="mb-3">
-        <label htmlFor="amaterno" className="form-label">
-          Apellido Materno
-        </label>
-        <input
-          type="text"
-          className="form-control"
-          id="amaterno"
-          name="amaterno"
-          value={amaterno}
-          onChange={onInputChange}
-        />
-      </div>
+        {/* Apellido Materno */}
+        <div style={{ marginBottom: "16px" }}>
+          <TextField
+            fullWidth
+            id="amaterno"
+            name="amaterno"
+            label="Apellido Materno"
+            value={amaterno}
+            onChange={onInputChange}
+          />
+        </div>
 
-      {/* Fecha de Nacimiento */}
-      <div className="mb-3">
-        <label htmlFor="fec_nac" className="form-label">
-          Fecha de Nacimiento
-        </label>
-        <input
-          type="date"
-          className="form-control"
-          id="fec_nac"
-          name="fec_nac"
-          value={fec_nac}
-          onChange={onInputChange}
-        />
-      </div>
+        {/* Fecha de Nacimiento */}
+        <div style={{ marginBottom: "16px" }}>
+          <TextField
+            fullWidth
+            id="fec_nac"
+            name="fec_nac"
+            type="date"
+            label="Fecha de Nacimiento"
+            InputLabelProps={{ shrink: true }}
+            value={fec_nac}
+            onChange={onInputChange}
+          />
+        </div>
 
-      {/* Sexo */}
-      <div className="mb-3">
-        <label htmlFor="sexo" className="form-label">
-          Sexo
-        </label>
-        <select
-          className="form-select"
-          id="sexo"
-          name="sexo"
-          value={sexo}
-          onChange={onInputChange}
+        {/* Sexo */}
+        <div style={{ marginBottom: "16px" }}>
+          <TextField
+            fullWidth
+            select
+            id="sexo"
+            name="sexo"
+            label="Sexo"
+            value={sexo.toUpperCase()}
+            onChange={onInputChange}
+          >
+            <MenuItem value="M" selected>
+              Masculino
+            </MenuItem>
+            <MenuItem value="F">Femenino</MenuItem>
+            <MenuItem value="N">No binario</MenuItem>
+            <MenuItem value="D">Desconocido</MenuItem>
+          </TextField>
+        </div>
+
+        {/* Nacionalidad */}
+        <div style={{ marginBottom: "16px" }}>
+          <TextField
+            fullWidth
+            select
+            id="nacionalidad"
+            name="nacionalidad"
+            label="Nacionalidad"
+            value={nacionalidad}
+            onChange={onInputChange}
+          >
+            <MenuItem value="CL">Chileno/a</MenuItem>
+            <MenuItem value="ARG">Argentino/a</MenuItem>
+            <MenuItem value="PE">Peruano/a</MenuItem>
+            <MenuItem value="BR">Brasileño/a</MenuItem>
+            <MenuItem value="N">Sin nacionalidad</MenuItem>
+          </TextField>
+        </div>
+
+        {/* Estado Civil */}
+        <div style={{ marginBottom: "16px" }}>
+          <TextField
+            fullWidth
+            select
+            id="estado_cv"
+            name="estado_cv"
+            label="Estado Civil"
+            value={estado_cv}
+            onChange={onInputChange}
+          >
+            <MenuItem value={1}>Soltero/a</MenuItem>
+            <MenuItem value={2}>Casado/a</MenuItem>
+            <MenuItem value={3}>Divorciado/a</MenuItem>
+            <MenuItem value={4}>Viudo/a</MenuItem>
+          </TextField>
+        </div>
+
+        {/* Botón Registrar */}
+        <Grid
+          container
+          mt={3}
+          flexDirection={"row"}
+          display={"flex"}
+          spacing={2}
+          justifyContent={"space-around"}
         >
-          <option value="">Seleccione...</option>
-          <option value={"M"}>Masculino</option>
-          <option value={"F"}>Femenino</option>
-          <option value={"N"}>No binario</option>
-          <option value={"D"}>Desconocido</option>
-        </select>
-      </div>
-
-      {/* Nacionalidad */}
-      <div className="mb-3">
-        <label htmlFor="nacionalidad" className="form-label">
-          Nacionalidad
-        </label>
-        <select
-          className="form-select"
-          id="nacionalidad"
-          name="nacionalidad"
-          value={nacionalidad}
-          onChange={onInputChange}
-        >
-          <option value={""}>Seleccione...</option>
-          <option value={"CL"}>Chileno/a</option>
-          <option value={"ARG"}>Argentino/a</option>
-          <option value={"PE"}>Peruano/a</option>
-          <option value={"BR"}>Brasileño/a</option>
-          <option value={"NA"}>Sin nacionalidad</option>
-        </select>
-      </div>
-
-      {/* Estado Civil */}
-      <div className="mb-3">
-        <label htmlFor="estado_cv" className="form-label">
-          Estado Civil
-        </label>
-        <select
-          className="form-select"
-          id="estado_cv"
-          name="estado_cv"
-          value={estado_cv}
-          onChange={onInputChange}
-        >
-          <option value="">Seleccione...</option>
-          <option value={1}>Soltero/a</option>
-          <option value={2}>Casado/a</option>
-          <option value={3}>Divorciado/a</option>
-          <option value={4}>Viudo/a</option>
-        </select>
-      </div>
-
-      {/* Botón Registrar */}
-      <div className="d-flex row gap-2">
-        <button type="submit" className="btn btn-success w-100">
-          Actualizar
-        </button>
-      </div>
-    </form>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            sx={{
+              height: "50px", // Ajusta la altura
+              width: "200px", // Ajusta el ancho
+              fontSize: "16px", // Ajusta el tamaño de la fuente
+            }}
+          >
+            Registrar
+          </Button>
+          <Button
+            onClick={onResetForm}
+            type="button"
+            fullWidth
+            variant="contained"
+            color="inherit"
+            sx={{
+              height: "50px", // Ajusta la altura
+              width: "200px", // Ajusta el ancho
+              fontSize: "16px", // Ajusta el tamaño de la fuente
+            }}
+          >
+            Limpiar
+          </Button>
+        </Grid>
+      </form>
+    </Grid>
   );
 };
