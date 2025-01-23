@@ -8,7 +8,6 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Person } from "../../../types/Person";
 import { Button } from "@mui/material";
-import { useNavigate } from "react-router";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -32,9 +31,14 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 interface PropsDataTable {
   dataList: Person[];
+  onDelete: (id: string) => void;
+  onUpdate: (id: string) => void;
 }
-export default function DataTable({ dataList = [] }: PropsDataTable) {
-  const navigate = useNavigate();
+export default function DataTable({
+  dataList = [],
+  onDelete,
+  onUpdate,
+}: PropsDataTable) {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -73,9 +77,8 @@ export default function DataTable({ dataList = [] }: PropsDataTable) {
                 <StyledTableCell align="center">{`${estado_cv}`}</StyledTableCell>
                 <StyledTableCell align="center">{`${nacionalidad}`}</StyledTableCell>
                 <StyledTableCell align="center">
-                  <Button onClick={() => navigate(`/search/${rut}`)}>
-                    Editar
-                  </Button>
+                  <Button onClick={() => onUpdate(rut)}>Editar</Button>
+                  <Button onClick={() => onDelete(id)}>Eliminar</Button>
                 </StyledTableCell>
               </StyledTableRow>
             )
