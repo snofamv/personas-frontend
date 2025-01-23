@@ -1,5 +1,5 @@
 import { Grid, Typography } from "@mui/material";
-import DataTable from "../components/table/DataTable";
+import DataTable from "../components/persons/DataTable";
 import { Loader } from "../components/ui/Loader";
 import { usePersons } from "../hooks";
 import { useNavigate } from "react-router";
@@ -30,7 +30,7 @@ export const PersonsPage = () => {
       sx={{ minHeight: "100vh" }} // Ajusta según el tamaño deseado
     >
       {loading && <Loader />}
-      {error && <Typography variant="h2">Ops.. Hubo un error.</Typography>}
+      {error && <Typography variant="h3">Ops.. Hubo un error.</Typography>}
       {!loading && !error && persons && persons.length > 0 && (
         <DataTable
           dataList={persons}
@@ -38,7 +38,7 @@ export const PersonsPage = () => {
           onUpdate={handleUpdatePerson}
         />
       )}
-      {!loading && !error && persons && persons.length === 0 && (
+      {!loading && !error && persons.length === 0 && (
         <Typography variant="h2" style={{ marginTop: 100 }}>
           No existen registros
         </Typography>

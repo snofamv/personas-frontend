@@ -4,7 +4,7 @@ import { useSearch } from "../hooks/useSearch";
 import { Person } from "../../types/Person";
 import { PersonCard } from "../components/persons/PersonCard";
 import Swal from "sweetalert2";
-import { Button, Grid, Typography } from "@mui/material";
+import { Button, Grid, Grid2, Typography } from "@mui/material";
 import { Loader } from "../components/ui/Loader";
 const initialFormData = {
   searchText: "",
@@ -85,6 +85,15 @@ export const SearchPerson = () => {
               onClick={handleUpdatePerson}
             />
           ))}
+
+        {person.length === 0 && (
+          <Grid2>
+            <Typography variant="h4" textAlign={"center"}>
+              No existen resultados con rut:{" "}
+              <Typography variant="text">{queryParam}</Typography>
+            </Typography>
+          </Grid2>
+        )}
       </Grid>
     </Grid>
   );
