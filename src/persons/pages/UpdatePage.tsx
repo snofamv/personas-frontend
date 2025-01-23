@@ -246,7 +246,6 @@ export const UpdatePage = () => {
               Masculino
             </MenuItem>
             <MenuItem value="F">Femenino</MenuItem>
-            <MenuItem value="N">No binario</MenuItem>
             <MenuItem value="D">Desconocido</MenuItem>
           </TextField>
         </div>
@@ -308,7 +307,7 @@ export const UpdatePage = () => {
               fontSize: "16px", // Ajusta el tamaño de la fuente
             }}
           >
-            Registrar
+            Actualizar
           </Button>
           <Button
             onClick={onResetForm}

@@ -16,3 +16,16 @@ export interface Person {
   activo: number;
   estado_cv: number;
 }
+
+export enum Generos {
+  M = "Masculino",
+  F = "Femenino",
+  D = "Desconocido", // Opcional
+}
+
+export enum EstadosCiviles {
+  "Soltero" = 1,
+  "Casado" = 2,
+  "Divorciado" = 3,
+  "Viudo" = 4,
+}

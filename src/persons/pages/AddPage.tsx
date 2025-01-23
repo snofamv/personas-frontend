@@ -225,7 +225,6 @@ export const AddPage = () => {
               Masculino
             </MenuItem>
             <MenuItem value="F">Femenino</MenuItem>
-            <MenuItem value="N">No binario</MenuItem>
             <MenuItem value="D">Desconocido</MenuItem>
           </TextField>
         </div>

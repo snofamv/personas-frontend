@@ -6,9 +6,10 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Person } from "../../../types/Person";
+import { EstadosCiviles, Generos, Person } from "../../../types/Person";
 import { Button } from "@mui/material";
-
+import { format } from "date-fns";
+import { capitalizeText, formatRut } from "../../utils/capitalizeText";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
@@ -69,12 +70,21 @@ export default function DataTable({
             }: Person) => (
               <StyledTableRow key={id}>
                 <StyledTableCell component="th" scope="row">
-                  {`${rut}-${dv}`}
+                  {formatRut(`${rut}-${dv}`)}
                 </StyledTableCell>
-                <StyledTableCell align="center">{`${nombre} ${apaterno} ${amaterno}`}</StyledTableCell>
-                <StyledTableCell align="center">{`${sexo}`}</StyledTableCell>
-                <StyledTableCell align="center">{`${fec_nac}`}</StyledTableCell>
-                <StyledTableCell align="center">{`${estado_cv}`}</StyledTableCell>
+                <StyledTableCell align="center">
+                  {capitalizeText(`${nombre} ${apaterno} ${amaterno}`)}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  {Generos[sexo as keyof typeof Generos] || "Desconocido"}
+                </StyledTableCell>
+                <StyledTableCell align="center">{`${format(
+                  fec_nac,
+                  "d-M-yyyy"
+                )}`}</StyledTableCell>
+                <StyledTableCell align="center">
+                  {EstadosCiviles[estado_cv] || "Desconocido"}
+                </StyledTableCell>
                 <StyledTableCell align="center">{`${nacionalidad}`}</StyledTableCell>
                 <StyledTableCell align="center">
                   <Button onClick={() => onUpdate(rut)}>Editar</Button>
