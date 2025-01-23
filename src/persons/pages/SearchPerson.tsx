@@ -86,11 +86,11 @@ export const SearchPerson = () => {
             />
           ))}
 
-        {person.length === 0 && (
+        {!loading && person.length === 0 && queryParam.length >= 7  && (
           <Grid2>
             <Typography variant="h4" textAlign={"center"}>
               No existen resultados con rut:{" "}
-              <Typography variant="text">{queryParam}</Typography>
+              <Typography variant="h5">{queryParam}</Typography>
             </Typography>
           </Grid2>
         )}
