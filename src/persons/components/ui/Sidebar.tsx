@@ -37,7 +37,7 @@ export const Sidebar = ({ drawerWidth }: Props) => {
       >
         <Toolbar>
           <Typography variant="h6" noWrap component="div">
-            Fabian Niclous
+            @Bienvenido
           </Typography>
         </Toolbar>
         <Divider />
