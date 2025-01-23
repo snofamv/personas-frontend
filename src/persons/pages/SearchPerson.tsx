@@ -4,7 +4,7 @@ import { useSearch } from "../hooks/useSearch";
 import { Person } from "../../types/Person";
 import { PersonCard } from "../components/persons/PersonCard";
 import Swal from "sweetalert2";
-import { Button, Grid, Typography } from "@mui/material";
+import { Button, Grid, TextField, Typography } from "@mui/material";
 import { Loader } from "../components/ui/Loader";
 const initialFormData = {
   searchText: "",
@@ -25,6 +25,7 @@ export const SearchPerson = () => {
         icon: "warning",
         confirmButtonText: "Volver",
       });
+      onResetForm();
       return;
     }
 
@@ -35,45 +36,64 @@ export const SearchPerson = () => {
   const handleUpdatePerson = (values: any) => {
     navigate(`/update/${values.rut}`);
   };
+
   return (
     <Grid container display={"flex"} flexDirection={"column"}>
-      <Grid item display={"flex"} flexDirection={"column"}>
-        <Typography variant="h4">Buscar RUT</Typography>
-        <Link to={"/"}>
-          <Button variant="contained">Volver</Button>
-        </Link>
-      </Grid>
-      <hr />
-      <Grid container>
+      <Link to={"/"}>
+        <Button variant="contained">Volver</Button>
+      </Link>
+      <Grid container mt={1}>
         <form onSubmit={onSearch}>
-          <input
-            type="string"
-            name="searchText"
-            placeholder="Encuentra a una persona..."
-            className="form-control"
-            onChange={onInputChange}
-            value={searchText}
-            minLength={1}
-            maxLength={8}
-            pattern="^[0-9]{1,8}$" // Expresión regular para permitir solo letras y números (1 a 8 caracteres)
-            title="Solo se permiten numeros"
-          />
-          <button type="submit" className="btn btn-outline-primary mt-2">
-            Buscar
-          </button>
+          <Grid container mt={1} flexDirection={"row"} display={"flex"} gap={1}>
+            <TextField
+              id="searchText"
+              name="searchText"
+              type="text"
+              label="Ingrese rut"
+              placeholder="12345678"
+              InputLabelProps={{ shrink: true }}
+              value={searchText}
+              onChange={onInputChange}
+              inputProps={{ maxLength: 8 }} // Establece el límite de caracteres aquí
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              sx={{
+                height: "50px", // Ajusta la altura
+                width: "120px", // Ajusta el ancho
+                fontSize: "16px", // Ajusta el tamaño de la fuente
+              }}
+            >
+              Buscar
+            </Button>
+            <Button
+              onClick={onResetForm}
+              type="button"
+              fullWidth
+              variant="outlined"
+              color="inherit"
+              sx={{
+                height: "50px", // Ajusta la altura
+                width: "120px", // Ajusta el ancho
+                fontSize: "16px", // Ajusta el tamaño de la fuente
+              }}
+            >
+              Limpiar
+            </Button>
+          </Grid>
         </form>
       </Grid>
 
-      <Grid>
-        {/* DATA LIST PERSONAS  */}
-        <Grid>
-          {loading && !error && <Loader />}
-          {error && !loading && <Typography variant="h5">Error</Typography>}
-          <Typography variant="h4" textAlign={"end"}>
-            Resultados
-          </Typography>
-        </Grid>
+      <Grid item>
+        <Typography variant="h4" textAlign={"end"}>
+          Resultados
+        </Typography>
         <hr />
+        {loading && !error && <Loader />}
+        {error && !loading && <Typography variant="h5">Error</Typography>}
         {person &&
           person.length > 0 &&
           person[0].id &&
@@ -87,12 +107,9 @@ export const SearchPerson = () => {
           ))}
 
         {!loading && person.length === 0 && queryParam.length >= 7 && (
-          <Grid>
-            <Typography variant="h4" textAlign={"center"}>
-              No existen resultados con rut:{" "}
-              <Typography variant="h5">{queryParam}</Typography>
-            </Typography>
-          </Grid>
+          <Typography variant="h4" textAlign={"center"}>
+            No existe rut:{queryParam}
+          </Typography>
         )}
       </Grid>
     </Grid>
