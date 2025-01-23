@@ -1,18 +1,17 @@
 import { People, PersonAdd, PersonSearch } from "@mui/icons-material";
 import {
   Box,
+  Button,
   Divider,
   Drawer,
   Grid,
-  Link,
   List,
   ListItem,
-  ListItemButton,
   ListItemIcon,
-  ListItemText,
   Toolbar,
   Typography,
 } from "@mui/material";
+import { Link } from "react-router";
 interface Props {
   drawerWidth: number;
 }
@@ -44,20 +43,44 @@ export const Sidebar = ({ drawerWidth }: Props) => {
         <Divider />
         <List>
           {/* LINKS DEL NAVBAR */}
-          {PATHS.map((path) => (
-            <ListItem key={path.id} disablePadding>
-              {/* Envolvemos el botón con Link para hacerlo funcional */}
-              <ListItemButton
-                component={Link}
-                href={`/${path.pathName.toLowerCase()}`}
+          {PATHS.map((path) => {
+            return (
+              <ListItem
+                key={path.id}
+                disablePadding
+                sx={{
+                  ml: 3,
+                  alignItems: "center",
+                  "&:hover": { backgroundColor: "action.hover" },
+                }}
               >
-                <ListItemIcon>{path.routeIcon}</ListItemIcon>
-                <Grid container>
-                  <ListItemText primary={path.title} />
+                <ListItemIcon
+                  sx={{
+                    minWidth: 40,
+                    color: "primary.main",
+                  }}
+                >
+                  {path.routeIcon}
+                </ListItemIcon>
+                <Grid item>
+                  <Button
+                    variant="text"
+                    sx={{
+                      textTransform: "none",
+                      px: 2,
+                      "& a": {
+                        textDecoration: "none",
+                        color: "text.primary",
+                        "&:hover": { color: "primary.main" },
+                      },
+                    }}
+                  >
+                    <Link to={`/${path.pathName}`}>{path.title}</Link>
+                  </Button>
                 </Grid>
-              </ListItemButton>
-            </ListItem>
-          ))}
+              </ListItem>
+            );
+          })}
         </List>
       </Drawer>
     </Box>
