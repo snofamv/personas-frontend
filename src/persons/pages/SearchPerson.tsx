@@ -100,36 +100,3 @@ export const SearchPerson = () => {
 };
 
 export default SearchPerson;
-
-// <div className="col-7">
-// <h4>Resultado</h4>
-// <hr />
-// {error && <h5 className="text-center">Error</h5>}
-
-// <div className={`col`}>
-//   {/* ESTO SIGUE APARECIENDO EN EL DOM */}
-//   <div
-//     className={`alert alert-primary text-center ${
-//       showSearch && loading ? "" : "d-none"
-//     }`}
-//   >
-//     <p>Cargando...</p>
-//   </div>
-//   <div
-//     className={`alert alert-primary text-center ${
-//       showSearch ? "" : "d-none"
-//     }`}
-//   >
-//     <p>Buscar persona por RUT</p>
-//   </div>
-//   <div
-//     className={`alert alert-danger text-center ${
-//       !showSearch && !loading && person[0]?.id === undefined
-//         ? ""
-//         : "d-none"
-//     }`}
-//   >
-//     <p>
-//       No existen resultados con RUT: <b>{queryParam}</b>
-//     </p>
-//   </div>
