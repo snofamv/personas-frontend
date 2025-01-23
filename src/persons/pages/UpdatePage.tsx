@@ -29,7 +29,6 @@ export const UpdatePage = () => {
     nombre,
     apaterno,
     amaterno,
-    rut = queryParam,
     estado_cv,
     nacionalidad,
     sexo,
