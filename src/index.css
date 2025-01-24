@@ -1,30 +1,21 @@
-/* .card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  border-color: #0d6efd;
-} */
-/* From Uiverse.io by Javierrocadev */
-.listCard {
-  width: 550px;
-  height: auto;
-  background: #e8eaea;
-  border-radius: 15px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.title,
-.more {
-  padding: 10px 15px;
-}
-
 .user {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 15px;
+  padding: 15px 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, background-color 0.3s ease,
+    box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.user:hover {
+  transform: translateY(-5px) scale(1.001);
+  background-color: #e0e0e0;
+  box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.15);
 }
 
 .user__content {
@@ -34,89 +25,32 @@
   flex-grow: 1;
 }
 
-.user__container {
-  display: flex;
-  flex-direction: column;
-}
-
-.title {
-  font-weight: 900;
-  font-size: 1.3em;
-}
-
 .name {
-  font-weight: 800;
+  font-weight: bold;
+  font-size: 1.2em;
+  color: #333;
 }
 
 .username {
   font-size: 0.9em;
-  color: #64696e;
+  color: #666;
 }
 
 .image {
   width: 60px;
   height: 60px;
-  background: rgb(22, 19, 70);
   background: linear-gradient(
-    295deg,
-    rgba(22, 19, 70, 1) 41%,
+    135deg,
+    rgba(22, 19, 70, 1) 40%,
     rgba(89, 177, 237, 1) 100%
   );
   border-radius: 50%;
   margin-right: 15px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.follow {
-  border: none;
-  border-radius: 25px;
-  background-color: #0f1113;
-  color: white;
-  padding: 8px 15px;
-  font-weight: 700;
-}
-.delete {
-  border: none;
-  border-radius: 25px;
-  background-color: #0f1113;
-  color: rgb(255, 105, 105);
-  padding: 8px 15px;
-  font-weight: 700;
-}
-.more {
-  display: block;
-  text-decoration: none;
-  color: rgb(29, 155, 240);
-  font-weight: 800;
-}
-
-.user:hover {
-  background-color: #b3b6b6;
-}
-
-.more:hover {
-  background-color: #b3b6b6;
-  border-radius: 0px 0px 15px 15px;
-}
-
-.follow:hover {
-  background-color: #2c3136;
-}
-
-.status-indicator {
-  margin-top: 0.5rem;
-}
-.status-badge {
-  display: inline-block;
-  padding: 0.2rem 0.5rem;
-  border-radius: 0.5rem;
-  font-size: 0.9rem;
-  font-weight: bold;
-}
-.status-badge.active {
-  background-color: #28a745;
-  color: #fff;
-}
-.status-badge.inactive {
-  background-color: #dc3545;
-  color: #fff;
+.image:hover {
+  transform: scale(1.1);
+  box-shadow: 0px 8px 15px rgba(89, 177, 237, 0.5);
 }
